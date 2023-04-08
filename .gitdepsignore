@@ -1,0 +1,83 @@
+# General stuff we skip
+/Engine/Documentation/**
+/Engine/Extras/**
+/FeaturePacks/**
+/Samples/**
+/Templates/**
+
+# We want python
+!/Engine/Extras/ThirdPartyNotUE/emsdk/Win64/python/**
+!/Engine/Extras/ThirdPartyNotUE/emsdk/Win64/clang/**
+
+# Take little space and important
+!/Engine/Extras/NatvisHelpers/**
+!/Engine/Extras/VisualStudioDebugging/**
+!/Engine/Extras/Redist/**
+!/Engine/Extras/UnrealVS/**
+
+# Sadly we need ARM trash
+!/Engine/Binaries/ThirdParty/ARM/**
+
+# IOS trash we actually need
+!/Engine/Binaries/ThirdParty/IOS/**
+!/Engine/Source/Programs/AutomationTool/IOS/**
+
+# IOS trash
+/Engine/Binaries/DotNET/IOS/**
+/Engine/Build/IOS/**
+/Engine/Content/Editor/PIEPreviewDeviceSpecs/IOS/**
+/Engine/Content/Editor/Slate/Launcher/IOS/**
+/Engine/Plugins/Compression/OodleData/Sdks/2.9.2/lib/IOS/**
+/Engine/Plugins/Compression/OodleData/Sdks/*/lib/IOS/**
+/Engine/Plugins/Compression/OodleNetwork/Sdks/2.9.2/lib/IOS/**
+/Engine/Plugins/Compression/OodleNetwork/Sdks/*/lib/IOS/**
+/Engine/Plugins/Online/IOS/**
+/Engine/Plugins/Online/OnlineSubsystemGoogle/**
+/Engine/Plugins/Runtime/Firebase/**
+/Engine/Source/ThirdParty/BLAKE3/0.3.7/lib/IOS/**
+/Engine/Source/ThirdParty/Breakpad/src/client/ios/**
+/Engine/Source/ThirdParty/EOSSDK/SDK/Bin/IOS/**
+/Engine/Source/ThirdParty/Expat/expat-*/IOS/**
+/Engine/Source/ThirdParty/Facebook/IOS/**
+/Engine/Source/ThirdParty/FreeType2/FreeType2-*/lib/IOS/**
+/Engine/Source/ThirdParty/FreeType2/FreeType2-*/Builds/IOS/**
+/Engine/Source/ThirdParty/FreeType2/FreeType2-*/Lib/IOS/**
+/Engine/Source/ThirdParty/GoogleARCore//lib/IOS/**
+/Engine/Source/ThirdParty/GoogleVR//lib/IOS/**
+/Engine/Source/ThirdParty/HarfBuzz/harfbuzz-*/IOS/**
+/Engine/Source/ThirdParty/ICU/icu4c-*/IOS/**
+/Engine/Source/ThirdParty/ICU/icu4c-*/lib/IOS/**
+/Engine/Source/ThirdParty/IOS/**
+/Engine/Source/ThirdParty/Ogg/libogg-*/ios/**
+/Engine/Source/ThirdParty/Ogg/libogg-*/lib/ios/**
+/Engine/Source/ThirdParty/OpenSSL/*k/lib/IOS/**
+/Engine/Source/ThirdParty/PLCrashReporter/lib/lib-Xcode-*/iOS/**
+/Engine/Source/ThirdParty/PhysX3/Lib/IOS/**
+/Engine/Source/ThirdParty/PhysX3/PhysX_*/Tools/BinaryMetaData/ios/**
+/Engine/Source/ThirdParty/SDL2/SDL-gui-backend/src/hidapi/ios/**
+/Engine/Source/ThirdParty/Vorbis/libvorbis-*/lib/IOS/**
+/Engine/Source/ThirdParty/coremod/coremod-*/lib/IOS/**
+/Engine/Source/ThirdParty/libOpus/opus-*/IOS/**
+/Engine/Source/ThirdParty/libPNG/libPNG-*/lib/IOS/**
+/Engine/Source/ThirdParty/libPNG/libPNG-*/projects/IOS/**
+/Engine/Source/ThirdParty/libWebSockets/libwebsockets/lib/IOS/**
+/Engine/Source/ThirdParty/libstrophe/libstrophe-*/Lib/IOS/**
+/Engine/Source/ThirdParty/mtlpp/mtlpp-*/lib/IOS/**
+/Engine/Source/ThirdParty/zlib/zlib-*/Lib/IOS/**
+
+
+# HTML5 trash
+/Engine/Content/Editor/Slate/Launcher/HTML5/**
+/Engine/Source/ThirdParty/FreeType2/FreeType2-*/Lib/HTML5/**
+/Engine/Source/ThirdParty/HarfBuzz/harfbuzz-*/HTML5/**
+/Engine/Source/ThirdParty/ICU/icu4c-*/HTML5/**
+/Engine/Source/ThirdParty/libPNG/libPNG-*/lib/HTML5/**
+/Source/ThirdParty/Ogg/libogg-*/lib/HTML5/**
+/Engine/Source/ThirdParty/PhysX3/Lib/HTML5/**
+/Engine/Source/ThirdParty/SDL2/SDL-gui-backend/lib/HTML5/**
+/Engine/Source/ThirdParty/Vorbis/libvorbis-*/lib/HTML5/**
+/Engine/Source/ThirdParty/zlib/zlib-*/Lib/HTML5/**
+
+# HTML5 trash we need
+!/Engine/Source/Programs/HTML5/**
+
