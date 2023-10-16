@@ -81,3 +81,11 @@
 # HTML5 trash we need
 !/Engine/Source/Programs/HTML5/**
 
+# CEF trash
+/Engine/Source/ThirdParty/CEF3/cef_binary_*_macos*
+/Engine/Source/ThirdParty/CEF3/cef_binary_*_linux*
+
+# Intel trash
+/Engine/Source/ThirdParty/Intel/ISPCTexComp/ISPCTextureCompressor*/ISPC/osx/**
+/Engine/Source/ThirdParty/MaterialX/Deploy/MaterialX-*/VS*/arm64/**
+/Engine/Source/ThirdParty/MaterialX/Deploy/MaterialX-*/Unix/**

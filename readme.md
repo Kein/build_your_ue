@@ -103,14 +103,12 @@ If UBT or AT fails to build, see **[Troubleshooting]** section.
 Once you have `UBT` built, it is time to test if our dev environment set up correctly and if we can compile and link UE modules and programs. From `$(EngineRoot)` directory:  
 UE5 --  
 ```
-cd Engine\Binaries\DotNET\UnrealBuildTool\
-UnrealBuildTool.exe UnrealHeaderTool Win64 Development
+Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.exe UnrealHeaderTool Win64 Development
 ```
 
 UE4 --  
 ```
-cd Engine\Binaries\DotNET\UnrealBuildTool.exe
-UnrealBuildTool.exe UnrealHeaderTool Win64 Development
+Engine\Binaries\DotNET\UnrealBuildTool.exe UnrealHeaderTool Win64 Development
 ```
 
 If `UHT` build succeeds, congratulations, your dev environment should be good. If it fails, revise the **I. [Tooling]** or check **[Troubleshooting]** sections.
@@ -200,14 +198,70 @@ which should be self-evident. Note that this applies to project generated for MS
 
 As you may now have fully realized - generated project files is just a convenient way to do batch compilation of what we did manually, using default "UE preset".
 
-### Skipping Debug symbols/PDB gen (speedup)
-TODO
+### Skipping Debug symbols/PDB gen (speedup,)
+By default, `UBT` has a hardcoded flag to always generate `DebugInfo` as well as PDBs. I assume this was done on purpose by Epic to make their life easier and ensure users always provide some kind of meaningful stack crash trace, sacrificing user choice in the process. Let us fix that.
+
+Open file
+`$(EngineSource)\Programs\UnrealBuildTool\Platform\Windows\UEBuildWindows.cs`
+
+Find something that looks like this (code here changes eery version):
+```csharp
+GlobalLinkEnvironment.bCreateDebugInfo = true;
+```
+and replace with
+```csharp
+GlobalLinkEnvironment.bCreateDebugInfo = GlobalCompileEnvironment.bCreateDebugInfo;
+```
+
+We've just made `UBT` to respect our configuration inside `BuildConfiguration.xml`. Let us capitalize on that right away.
+Open existing or create file `BuildConfiguration.xml` inside:
+`%APPDATA\Unreal Engine\UnrealBuildTool\`
+and add a section `<BuildConfiguration>`:
+```xml
+<BuildConfiguration>
+	<bUseIncrementalLinking>false</bUseIncrementalLinking>
+	<bDisableDebugInfo>true</bDisableDebugInfo>
+	<bDisableDebugInfoForGeneratedCode>true</bDisableDebugInfoForGeneratedCode>
+	<bOmitPCDebugInfoInDevelopment>false</bOmitPCDebugInfoInDevelopment>
+</BuildConfiguration>
+```
+
+[For more information about about build configuration file see its documentation page](https://docs.unrealengine.com/4.26/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/BuildConfiguration/)
+
+
+Now all that's left is to **rebuild** `UBT` and you are done. PDB and debug info no longer will be generated during build process. This save both on overall build time and disk space.
 
 ### Skipping plugins (speedup)
-TODO
+The best and easiest way to skip building specific plugins is to simply remove/move them somewhere else from `$(EngineSource)\Plugins`. There is technically a way to somehow add them to blacklist/do-not-build list but I never found a working method. I think it used to work once but with time that code broke and got abandoned/forgotten.
+
+Each UE version has its own requirements to the minimal set of plugins required to build and successfully run `Editor/Game` targets. You will have to experiment, because it constantly changes, but in general, here is minimal set for 5.x that works:
+
+```
+Plugins/Compression/OodleNetwork                Plugins/Editor/EditorDebugTools
+Plugins/Developer/BlankPlugin                   Plugins/Editor/EditorScriptingUtilities
+Plugins/Developer/Concert                       Plugins/Editor/GameplayTagsEditor
+Plugins/Developer/NullSourceCodeAccess          Plugins/Editor/PluginBrowser
+Plugins/Developer/PluginUtils                   Plugins/Editor/WorldPartitionHLODUtilities
+Plugins/Developer/PropertyAccessNode            Plugins/EnhancedInput/Binaries
+Plugins/Developer/TextureFormatOodle            Plugins/EnhancedInput/Config
+Plugins/Developer/VisualStudioSourceCodeAccess  Plugins/EnhancedInput/Content
+Plugins/Editor/AssetManagerEditor               Plugins/EnhancedInput/EnhancedInput.uplugin
+Plugins/Editor/AssetReferenceRestrictions       Plugins/EnhancedInput/Intermediate
+Plugins/Editor/AssetSearch                      Plugins/EnhancedInput/Resources
+Plugins/Editor/BlueprintHeaderView              Plugins/EnhancedInput/Source
+Plugins/Editor/ConsoleVariablesEditor           Plugins/Messaging/TcpMessaging
+Plugins/Editor/ContentBrowser                   Plugins/Runtime/Database
+Plugins/Editor/CryptoKeys                       Plugins/Runtime/PropertyAccess
+Plugins/Editor/DataValidation
+```
+
+**To add a plugin back,** you simply can copy it back into the `$(EngineSource)\Plugins` and rebuild the targets, if you are working with source build. If you are using foreign project and/or `installed build`, copy the engine plugin into project's `Plugins/` folder and rebuild your project. In 99% cases this will work just fine, but there can be some engine plugins that are hardcoded to only work properly when build inside the Engine space. I haven't encountered one yet but keep this in mind when some plugins exhibit weird/unexpected behaviour.
+
+**Do note** that example projects like `Lyra` will require a wider variety of plugins and often indirectly, i.e. when one plugins or module requires another and it is not immediately obvious.
 
 ### Skipping modules (speedup)
-TODO
+This is an uncharted territory. Although the process and setup is similar to previous section describing plugins, one thing you need to keep in mind is that modules are intertwined way too deep between each other (hello *modul*arity) and for the most part you can't remove anything without consequences cascading down. Still, if you desire, you can experiement by removing module folder and files from `$(EngineSource)\Developer` or `$(EngineSource)\Editor` or `$(EngineSource)\Runtime`. Don't forget to remove them from other module's dependencies as well, via respectitive `*.Build.cs` descriptor.  
+You will also most likely need to rebuild `UBT` afterwards, before you can build engine targets.
 
 ### Passing extra compiler/linker flags
 TODO
