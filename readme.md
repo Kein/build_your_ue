@@ -155,6 +155,27 @@ UnrealBuildTool.exe ShaderCompileWorker Win64 Development
 Now you can run the Editor.  
 That is pretty much it for the basic UE build.
 
+### Minimal working Editor
+
+An example for UE5:
+
+```
+dotnet build Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.sln
+dotnet build Engine\Source\Programs\AutomationTool\AutomationTool.csproj
+dotnet build Engine\Source\Programs\AutomationTool\AutomationUtils\AutomationUtils.Automation.csproj
+dotnet build Engine\Source\Programs\AutomationTool\IOS\IOS.Automation.csproj
+dotnet build Engine\Source\Programs\AutomationTool\Scripts\AutomationScripts.Automation.csproj
+
+UnrealBuildTool.exe UnrealHeaderTool Win64 Development
+UnrealBuildTool.exe UnrealPAK Win64 Development
+UnrealBuildTool.exe ShaderCompileWorker Win64 Development
+
+UnrealBuildTool.exe UnrealEditor Win64 Development
+UnrealBuildTool.exe UnrealGame Win64 Development
+```
+
+This build should run, work and package projects.
+
 ## III. ADVANCED BUILD
 
 ### Other platforms and configurations
@@ -255,7 +276,7 @@ Plugins/Editor/CryptoKeys                       Plugins/Runtime/PropertyAccess
 Plugins/Editor/DataValidation
 ```
 
-**To add a plugin back,** you simply can copy it back into the `$(EngineSource)\Plugins` and rebuild the targets, if you are working with source build. If you are using foreign project and/or `installed build`, copy the engine plugin into project's `Plugins/` folder and rebuild your project. In 99% cases this will work just fine, but there can be some engine plugins that are hardcoded to only work properly when build inside the Engine space. I haven't encountered one yet but keep this in mind when some plugins exhibit weird/unexpected behaviour.
+**To add a plugin back,** you simply can copy it back into the `$(EngineSource)\Plugins` and rebuild the targets, if you are working with source build. *If you are using a foreign project* and/or `installed build`, copy the engine plugin into **project's** `Plugins/` folder and rebuild your project. In 99% cases this will work just fine, but there can be some engine plugins that are hardcoded to only work properly when build inside the Engine space. I haven't encountered one yet but keep this in mind when some plugins exhibit weird/unexpected behaviour.
 
 **Do note** that example projects like `Lyra` will require a wider variety of plugins and often indirectly, i.e. when one plugins or module requires another and it is not immediately obvious.
 
