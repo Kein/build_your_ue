@@ -1,5 +1,29 @@
 # **UE FROM SOURCES: MINIMAL & MANUAL**
 
+**[INTRO](#intro)**   
+ -- [Terminology](#terminology)  
+ -- [Limitations](#limitations)  
+
+ **[I PRE-REQUISITES](#i-pre-requisites)**   
+ -- [Tooling](#tooling)  
+ -- [Binary and 3rd party UE dependencies](#binary-and-3rd-party-ue-dependencies)  
+
+ **[II BUILDING UE](#ii-building-ue)**   
+ -- [Things Unreal Engine does not care about](#things-unreal-engine-does-not-care-about)  
+ -- [Building UnrealBuildTool and AutomationTools](#building-unrealbuildtool-and-automationtools)  
+ -- [Building UnrealHeaderTool](#building-unrealheadertool)  
+ -- [Building Unreal Game target](#building-unreal-game-target)  
+ -- [Building Unreal Editor target](#building-unreal-editor-target)  
+ -- [Minimal working Editor](#minimal-working-editor)  
+   
+ **[III ADVANCED BUILD](#iii-advanced-build)**   
+ -- [Other platforms and configurations](#other-platforms-and-configurations)  
+ -- [Available targets](#available-targets)  
+ -- [Skipping Debug symbols and PDB gen)](#skipping-debug-symbols-and-pdb-gen)  
+ -- [Skipping plugins](#skipping-plugins)  
+ -- [Skipping modules](#skipping-modules)  
+
+
 ## INTRO
 The purpose of this guide is to give you a quick, high-level overview of how to build Unreal Engine from sources *somewhat manually* and with some hacks&tricks that can *potentially* speedup the process and, *potentially*, save on disk space (no IncrediBuild/XGE and all that enterprise jazz). You may find it useful if you iterate on engine sources a lot or just want some explicit building process for troubleshooting purposes.
 
@@ -19,7 +43,7 @@ The purpose of this guide is to give you a quick, high-level overview of how to 
 
 &nbsp;  
 
-## I. PRE-REQUISITES
+## I PRE-REQUISITES
 
 ### Tooling
 As per [UE repo](https://github.com/EpicGames/UnrealEngine), install the required tools and dependencies, relevant to your  UE version (switch the tag/branch for relevant `readme.md`) This guide assumes you want to build UE 5.x by default but it attempts to cover building older versions as well, like aforementioned 4.23. Because of this, after installing recommended by Epic pre-requisites, it is strongly *advised* that you install or ensure that you already have installed: 
@@ -33,7 +57,7 @@ As per [UE repo](https://github.com/EpicGames/UnrealEngine), install the require
 
 
 
-### Binary and 3rd-party UE dependencies
+### Binary and 3rd party UE dependencies
 
 ```
 Do you want to save on some disk space?
@@ -63,7 +87,7 @@ It is important to note here, that UE deps are messy. *Very messy*. You think th
 
 Oh and yes, you **can combine** both methods mentioned above.
 
-## II. BUILDING UE
+## II BUILDING UE
 
 If you've skipped last step from previous chapter - run `Setup.bat` now.  
 
@@ -176,7 +200,7 @@ UnrealBuildTool.exe UnrealGame Win64 Development
 
 This build should run, work and package projects.
 
-## III. ADVANCED BUILD
+## III ADVANCED BUILD
 
 ### Other platforms and configurations
 
@@ -219,7 +243,7 @@ which should be self-evident. Note that this applies to project generated for MS
 
 As you may now have fully realized - generated project files is just a convenient way to do batch compilation of what we did manually, using default "UE preset".
 
-### Skipping Debug symbols/PDB gen (speedup,)
+### Skipping Debug symbols and PDB gen
 By default, `UBT` has a hardcoded flag to always generate `DebugInfo` as well as PDBs. I assume this was done on purpose by Epic to make their life easier and ensure users always provide some kind of meaningful stack crash trace, sacrificing user choice in the process. Let us fix that.
 
 Open file
@@ -252,7 +276,7 @@ and add a section `<BuildConfiguration>`:
 
 Now all that's left is to **rebuild** `UBT` and you are done. PDB and debug info no longer will be generated during build process. This save both on overall build time and disk space.
 
-### Skipping plugins (speedup)
+### Skipping plugins
 The best and easiest way to skip building specific plugins is to simply remove/move them somewhere else from `$(EngineSource)\Plugins`. There is technically a way to somehow add them to blacklist/do-not-build list but I never found a working method. I think it used to work once but with time that code broke and got abandoned/forgotten.
 
 Each UE version has its own requirements to the minimal set of plugins required to build and successfully run `Editor/Game` targets. You will have to experiment, because it constantly changes, but in general, here is minimal set for 5.x that works:
@@ -280,7 +304,7 @@ Plugins/Editor/DataValidation
 
 **Do note** that example projects like `Lyra` will require a wider variety of plugins and often indirectly, i.e. when one plugins or module requires another and it is not immediately obvious.
 
-### Skipping modules (speedup)
+### Skipping modules
 This is an uncharted territory. Although the process and setup is similar to previous section describing plugins, one thing you need to keep in mind is that modules are intertwined way too deep between each other (hello *modul*arity) and for the most part you can't remove anything without consequences cascading down. Still, if you desire, you can experiement by removing module folder and files from `$(EngineSource)\Developer` or `$(EngineSource)\Editor` or `$(EngineSource)\Runtime`. Don't forget to remove them from other module's dependencies as well, via respectitive `*.Build.cs` descriptor.  
 You will also most likely need to rebuild `UBT` afterwards, before you can build engine targets.
 
