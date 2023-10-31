@@ -1,26 +1,37 @@
-# General stuff we skip
+#####################################
+#                                   #
+#   READ CAREFULLY BEFORE APPLYING! #
+#                                   #
+#####################################
+
+# This .gitdepignore list was curated for Win64 and Win75 ONLY.
+# It cuts offf a lot of IOS, MacOS, Linux and android stuff.
+# If you plan to do multi-plat packaging REVISE it thoroughly.
+
+# General stuff we skip, like Docs, Templates, etc
 /Engine/Documentation/**
 /Engine/Extras/**
 /FeaturePacks/**
 /Samples/**
 /Templates/**
 
+# Exceptions
+!/FeaturePacks/TP_ThirdPersonBP.upack
+!/Templates/TP_ThirdPersonBP
+!/Templates/TemplateResources
+
 # We want python
 !/Engine/Extras/ThirdPartyNotUE/emsdk/Win64/python/**
 !/Engine/Extras/ThirdPartyNotUE/emsdk/Win64/clang/**
 
-# Take little space and important
+# Takes little space and important
 !/Engine/Extras/NatvisHelpers/**
 !/Engine/Extras/VisualStudioDebugging/**
 !/Engine/Extras/Redist/**
 !/Engine/Extras/UnrealVS/**
 
-# Sadly we need ARM trash
+# Sadly we need ARM trash on Windows (???)
 !/Engine/Binaries/ThirdParty/ARM/**
-
-# IOS trash we actually need
-!/Engine/Binaries/ThirdParty/IOS/**
-!/Engine/Source/Programs/AutomationTool/IOS/**
 
 # IOS trash
 /Engine/Binaries/DotNET/IOS/**
@@ -65,6 +76,11 @@
 /Engine/Source/ThirdParty/mtlpp/mtlpp-*/lib/IOS/**
 /Engine/Source/ThirdParty/zlib/zlib-*/Lib/IOS/**
 
+# IOS trash we actually need
+!/Engine/Binaries/ThirdParty/IOS/**
+!/Engine/Source/Programs/AutomationTool/IOS/**
+!/Engine/Source/Programs/AutomationTool/IOS/Resources/**
+!/Engine/Plugins/Online/IOS/**
 
 # HTML5 trash
 /Engine/Content/Editor/Slate/Launcher/HTML5/**
@@ -82,10 +98,60 @@
 !/Engine/Source/Programs/HTML5/**
 
 # CEF trash
-/Engine/Source/ThirdParty/CEF3/cef_binary_*_macos*
-/Engine/Source/ThirdParty/CEF3/cef_binary_*_linux*
+/Engine/Source/ThirdParty/CEF3/*macos*/**
+/Engine/Source/ThirdParty/CEF3/*linux*/**
 
-# Intel trash
+# Intel non-windows stuff
 /Engine/Source/ThirdParty/Intel/ISPCTexComp/ISPCTextureCompressor*/ISPC/osx/**
 /Engine/Source/ThirdParty/MaterialX/Deploy/MaterialX-*/VS*/arm64/**
 /Engine/Source/ThirdParty/MaterialX/Deploy/MaterialX-*/Unix/**
+
+# Non-Windows 3d party bundled binaries
+/Engine/Binaries/ThirdParty/DotNet/6.0.302/*mac*/**
+/Engine/Binaries/ThirdParty/DotNet/6.0.302/*linux*/**
+/Engine/Binaries/ThirdParty/DotNet/6.0.302/*arm*/**
+/Engine/Binaries/ThirdParty/CEF3/Mac/**
+/Engine/Binaries/ThirdParty/CEF3/Linux/**
+/Engine/Binaries/ThirdParty/ShaderConductor/Linux/**
+/Engine/Binaries/ThirdParty/ShaderConductor/Mac/**
+/Engine/Binaries/ThirdParty/Vulkan/Linux/**
+/Engine/Binaries/ThirdParty/svn/Mac/**
+/Engine/Binaries/ThirdParty/Python3/Mac/**
+/Engine/Binaries/ThirdParty/Python3/Linux/**
+/Engine/Binaries/ThirdParty/ICU/icu4c-5*/Mac/**
+/Engine/Binaries/ThirdParty/ICU/icu4c-5*/Linux/**
+/Engine/Binaries/ThirdParty/Embree/Embree*/Linux/**
+/Engine/Binaries/ThirdParty/PhysX3/Mac/**
+/Engine/Binaries/ThirdParty/PhysX3/Unix/**
+
+# Non-Windows 3d party source deps bundled
+/Engine/Source/ThirdParty/Alembic/Deploy/alembic-1.*/Mac/**
+/Engine/Source/ThirdParty/Alembic/Deploy/alembic-1.*/Unix/**
+/Engine/Source/ThirdParty/ICU/icu4c-64_1/lib/Android/**
+/Engine/Source/ThirdParty/ICU/icu4c-64_1/lib/Mac/**
+/Engine/Source/ThirdParty/ICU/icu4c-64_1/lib/TVOS/**
+/Engine/Source/ThirdParty/ICU/icu4c-64_1/lib/Unix/**
+/Engine/Source/ThirdParty/Intel/Embree/Embree*/Linux/**
+/Engine/Source/ThirdParty/Intel/Embree/Embree*/MacOSX/**
+/Engine/Source/ThirdParty/Intel/ISPC/bin/Linux/**
+/Engine/Source/ThirdParty/Intel/ISPC/bin/Mac/**
+/Engine/Source/ThirdParty/MaterialX/Deploy/MaterialX-*/Mac/**
+/Engine/Source/ThirdParty/OpenVDB/Deploy/openvdb-*/Mac/**
+/Engine/Source/ThirdParty/OpenVDB/Deploy/openvdb-*/Unix/**
+/Engine/Source/ThirdParty/Protobuf/2*/bin/Mac/**
+/Engine/Source/ThirdParty/Protobuf/2*/bin/Unix/**
+/Engine/Source/ThirdParty/Protobuf/2*/lib/Mac/**
+/Engine/Source/ThirdParty/Protobuf/2*/lib/Unix/**
+/Engine/Source/ThirdParty/Protobuf/3*/bin/Mac/**
+/Engine/Source/ThirdParty/Protobuf/3*/bin/Unix/**
+/Engine/Source/ThirdParty/Protobuf/3*/lib/Mac/**
+/Engine/Source/ThirdParty/Protobuf/3*/lib/Unix/**
+/Engine/Source/ThirdParty/HarfBuzz/harfbuzz-2*/lib/Android/**
+/Engine/Source/ThirdParty/HarfBuzz/harfbuzz-2*/lib/IOS/**
+/Engine/Source/ThirdParty/HarfBuzz/harfbuzz-2*/lib/Mac/**
+/Engine/Source/ThirdParty/HarfBuzz/harfbuzz-2*/lib/TVOS/**
+/Engine/Source/ThirdParty/HarfBuzz/harfbuzz-2*/lib/Unix/**
+
+# Engine Binaries, non-Win64
+/Engine/Binaries/Linux/**
+/Engine/Binaries/MacOS/**
