@@ -21,7 +21,13 @@
  -- [Available targets](#available-targets)  
  -- [Skipping Debug symbols and PDB gen)](#skipping-debug-symbols-and-pdb-gen)  
  -- [Skipping plugins](#skipping-plugins)  
- -- [Skipping modules](#skipping-modules)  
+ -- [Skipping modules](#skipping-modules)   
+
+  **[IV TROUBLESHOOTING](#iv-troubleshooting)**   
+
+  **[V BONUS](#v-bonus)**   
+ -- [Marketplace content with Legendary](#marketplace-content-with-legendary)  
+
 
 
 ## INTRO
@@ -213,7 +219,7 @@ UnrealBuildTool.exe CrashReportClient Win32 Shipping
 If you want to build your project-specific targets (*foreign project*):  
 
 ```
-UnrealBuildTool.exe -project=full\path\to\my.uproject Target Platform Configuration
+UnrealBuildTool.exe -project=full\path\to\my.uproject Target Platform Configuration [-game or -editor]
 ```
 
 ### Available targets
@@ -264,10 +270,9 @@ Open existing or create file `BuildConfiguration.xml` inside:
 and add a section `<BuildConfiguration>`:
 ```xml
 <BuildConfiguration>
-	<bUseIncrementalLinking>false</bUseIncrementalLinking>
 	<bDisableDebugInfo>true</bDisableDebugInfo>
 	<bDisableDebugInfoForGeneratedCode>true</bDisableDebugInfoForGeneratedCode>
-	<bOmitPCDebugInfoInDevelopment>false</bOmitPCDebugInfoInDevelopment>
+	<bOmitPCDebugInfoInDevelopment>true</bOmitPCDebugInfoInDevelopment>
 </BuildConfiguration>
 ```
 
@@ -300,12 +305,12 @@ Plugins/Editor/CryptoKeys                       Plugins/Runtime/PropertyAccess
 Plugins/Editor/DataValidation
 ```
 
-**To add a plugin back,** you simply can copy it back into the `$(EngineSource)\Plugins` and rebuild the targets, if you are working with source build. *If you are using a foreign project* and/or `installed build`, copy the engine plugin into **project's** `Plugins/` folder and rebuild your project. In 99% cases this will work just fine, but there can be some engine plugins that are hardcoded to only work properly when build inside the Engine space. I haven't encountered one yet but keep this in mind when some plugins exhibit weird/unexpected behaviour.
+**To add a plugin back,** you simply can copy it back into the `$(EngineSource)\Plugins` and rebuild the targets, if you are working with source build. *If you are using a foreign project* and/or `installed build`, copy the engine plugin into **project's** `Plugins/` folder and rebuild your project. In 99% cases this will work just fine, but there can be some engine plugins that are hardcoded to only work properly when build inside the Engine space, like `ReplicationGraph` plugin, so keep that in mind.
 
 **Do note** that example projects like `Lyra` will require a wider variety of plugins and often indirectly, i.e. when one plugins or module requires another and it is not immediately obvious.
 
 ### Skipping modules
-This is an uncharted territory. Although the process and setup is similar to previous section describing plugins, one thing you need to keep in mind is that modules are intertwined way too deep between each other (hello *modul*arity) and for the most part you can't remove anything without consequences cascading down. Still, if you desire, you can experiement by removing module folder and files from `$(EngineSource)\Developer` or `$(EngineSource)\Editor` or `$(EngineSource)\Runtime`. Don't forget to remove them from other module's dependencies as well, via respectitive `*.Build.cs` descriptor.  
+This is an uncharted territory. Although the process and setup is similar to previous section describing plugins, one thing you need to keep in mind is that modules are intertwined way too deep between each other and UE itself (hello *modul*arity) and for the most part you can't remove anything without consequences cascading down. Still, if you desire, you can experiement by removing module folder and files from `$(EngineSource)\Developer` or `$(EngineSource)\Editor` or `$(EngineSource)\Runtime`. Don't forget to remove them from other module's dependencies as well, via respectitive `*.Build.cs` descriptor.  
 You will also most likely need to rebuild `UBT` afterwards, before you can build engine targets.
 
 ### Passing extra compiler/linker flags
@@ -315,5 +320,19 @@ TODO
 TODO
 
 
-## IV. TROUBLESHOOTING
+## IV TROUBLESHOOTING
 TODO
+
+## V BONUS
+
+### Marketplace content with Legendary  
+
+So now that you have source engine built and running, you probably are wondering how can you get your purchased marketplace content added to it? A terrible option would be to install a launcher engine of the same version and then download marketplace assets/content for it via Epic Launcher and copy over, but this is a waste of space and time and simply not our way to do things.  
+
+Instead, we can use a CLI-tool made to interact with for Epic Store, called [Legendary](https://github.com/derrod/legendary). It allows you to login with your credentials and download subscribed content directly. The usage is fairly simple and it has an extensive `--help` output, but here is a quick-start:
+
+* `legendary list --include-ue` will list all the downloadable UE content (along with the rest)
+
+* `legendary install AppNameHere --download-only --base-path D:\UEStuff` will download the subscription/app content
+
+One thing to note - if you want to download some of the content from UE5.x apps, you can't do it on a freshly made account. You actually need to install Epic Launcher first, login with this account, initiate any UE5 version download, then cancel it and uninstall. This will "subscribe" you to UE5 feed and now it will be accessible in `Legendary` as well.
