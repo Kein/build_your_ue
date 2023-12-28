@@ -142,7 +142,7 @@ Once you have `UBT` built, it is time to test if our dev environment set up corr
 
 From `$(EngineRoot)` directory:  
 
-UE5-5.2 --  
+UE5.3+ --  
 ```
 Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.exe BlankProgram Win64 Development
 ```
@@ -328,6 +328,49 @@ Plugins/Editor/DataValidation
 ### Skipping modules
 This is an uncharted territory. Although the process and setup is similar to previous section describing plugins, one thing you need to keep in mind is that modules are intertwined way too deep between each other and UE itself (hello *modul*arity) and for the most part you can't remove anything without consequences cascading down. Still, if you desire, you can experiement by removing module folder and files from `$(EngineSource)\Developer` or `$(EngineSource)\Editor` or `$(EngineSource)\Runtime`. Don't forget to remove them from other module's dependencies as well, via respectitive `*.Build.cs` descriptor.  
 You will also most likely need to rebuild `UBT` afterwards, before you can build engine targets.
+
+
+### BuildConfiguration.xml
+If you don't want to go through the hassle of passing some custom compiler/linker flags, then BuildConfiguration.xml is just a too for you - it allows you to configure/control build environment and build process for UE  and its projects.
+It is impossible to cover everything this config file offers, so we only go through the basics. You can read about the rest at 
+https://docs.unrealengine.com/5.3/en-US/build-configuration-for-unreal-engine/
+
+Example config:
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<Configuration xmlns="https://www.unrealengine.com/BuildConfiguration">
+<ParallelExecutor>
+	<MaxProcessorCount>6</MaxProcessorCount>
+</ParallelExecutor>
+<ProjectFileGenerator>
+	<bIncludeEnginePrograms>false</bIncludeEnginePrograms>
+	<bAllDocumentationLanguages>false</bAllDocumentationLanguages>
+	<bIncludeDotNetPrograms>false</bIncludeDotNetPrograms>
+	<bIncludeTemplateFiles>false</bIncludeTemplateFiles>
+	<bIncludeConfigFiles>false</bIncludeConfigFiles>
+</ProjectFileGenerator>
+<WindowsPlatform>
+	<WindowsSdkVersion>10.0.19041.0</WindowsSdkVersion>
+	<CompilerVersion>14.36.32532</CompilerVersion>
+	<PCHMemoryAllocationFactor>400</PCHMemoryAllocationFactor>
+</WindowsPlatform>
+<BuildConfiguration>
+	<bDisableDebugInfo>true</bDisableDebugInfo>
+	<bDisableDebugInfoForGeneratedCode>true</bDisableDebugInfoForGeneratedCode>
+	<bOmitPCDebugInfoInDevelopment>true</bOmitPCDebugInfoInDevelopment>
+</BuildConfiguration>
+</Configuration>
+<!--5.3-->
+```
+
+Let us unpack this. This config was created for UE 5.3 as a base. The machine it is used on has 12 logical cores and 6 physical ones, but because UE build pipeline operate at a higher level on physical cores (the compilers/linkers will do their own thing), we specify here physical count (the UBT will output number of processor being used/available during build), hence `MaxProcessorCount` set to 6. You can omit `[ParallelExecutor]` altogether if unsure.
+
+`[ProjectFileGenerator]` section allows us to configure some useful behaviour for project gen, like excluding extra junk from being added to project files. There is no point to recompile C# tools every time, for example.
+
+`[WindowsPlatform]` section allows us to specify which WindowsSDK we will be building against via `WindowsSdkVersion` directive (in case you have multiple installed), as well as which C++ build tools version we gonna use via `CompilerVersion` directive. To find out which versions you can use there, go to `<Visual_Studio_root_dir\VC\Tools\MSVC\>` - there will be a list of directories by version. You specific THIS exact version in the config, not the binary version of the linker/compiler. Finally, `PCHMemoryAllocationFactor` allows us to configure how much memory we allocate per thread (in this case it most likely will be a thread per core) for PCH. If you get a lot of `out of heap!` errors during compilation, try tweaking this parameter. 
+
+And the last section `[BuildConfiguration]` is something we've already covered in [Skipping Debug symbols and PDB gen)](#skipping-debug-symbols-and-pdb-gen). All of the options are self-explanatory, but if you need specifics, please consult linked UE documentation on the subject.
+
 
 ### Passing extra compiler/linker flags
 TODO
