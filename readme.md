@@ -22,7 +22,8 @@
  -- [Skipping Debug symbols and PDB gen)](#skipping-debug-symbols-and-pdb-gen)  
  -- [Skipping plugins](#skipping-plugins)  
  -- [Skipping modules](#skipping-modules)   
-
+ -- [BuildConfiguration.xml](#buildconfiguration)   
+ 
   **[IV TROUBLESHOOTING](#iv-troubleshooting)**   
 
   **[V BONUS](#v-bonus)**   
@@ -330,7 +331,7 @@ This is an uncharted territory. Although the process and setup is similar to pre
 You will also most likely need to rebuild `UBT` afterwards, before you can build engine targets.
 
 
-### BuildConfiguration.xml
+### BuildConfiguration
 If you don't want to go through the hassle of passing some custom compiler/linker flags, then BuildConfiguration.xml is just a too for you - it allows you to configure/control build environment and build process for UE  and its projects.
 It is impossible to cover everything this config file offers, so we only go through the basics. You can read about the rest at 
 https://docs.unrealengine.com/5.3/en-US/build-configuration-for-unreal-engine/
@@ -371,6 +372,9 @@ Let us unpack this. This config was created for UE 5.3 as a base. The machine it
 
 And the last section `[BuildConfiguration]` is something we've already covered in [Skipping Debug symbols and PDB gen)](#skipping-debug-symbols-and-pdb-gen). All of the options are self-explanatory, but if you need specifics, please consult linked UE documentation on the subject.
 
+One thing to note is that I personally recommend using  
+`%APPDATA%\Unreal Engine\UnrealBuildTool\`   
+as a default location for your config. For some reason per-engine file sometimes being ignored and I haven't figured out what causes this bug yet.
 
 ### Passing extra compiler/linker flags
 TODO
