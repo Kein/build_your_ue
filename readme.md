@@ -111,6 +111,14 @@ cd $(EngineRoot)`
 ```
 
 Build UBT:
+
+UE5.3 --  
+```
+dotnet build Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.sln -c Development
+```
+*(I recommend building the *.sln project because it also builds all dependencies like new UHT for U5.3)*
+
+UE5.x --  
 ```
 dotnet build Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.csproj -c Development
 ```
@@ -128,10 +136,18 @@ dotnet build Engine\Source\Programs\AutomationTool\AutomationTool.csproj -c Deve
 
 If UBT or AT fails to build, see **[Troubleshooting]** section.
 
-### Building UnrealHeaderTool
+### Building UnrealHeaderTool/BlankProgram
 
-Once you have `UBT` built, it is time to test if our dev environment set up correctly and if we can compile and link UE modules and programs. From `$(EngineRoot)` directory:  
-UE5 --  
+Once you have `UBT` built, it is time to test if our dev environment set up correctly and if we can compile and link UE modules and programs. Do note that **UnrealHeaderTool** was removed from UE 5.3 and is no longer an *engine program* but rather a part of EpicGames Shared C++ toolkit and is being built when you compile `AutomationTools`/`UBT` (as a solution for the latter).
+
+From `$(EngineRoot)` directory:  
+
+UE5-5.2 --  
+```
+Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.exe BlankProgram Win64 Development
+```
+
+UE5-5.2 --  
 ```
 Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.exe UnrealHeaderTool Win64 Development
 ```
@@ -141,7 +157,7 @@ UE4 --
 Engine\Binaries\DotNET\UnrealBuildTool.exe UnrealHeaderTool Win64 Development
 ```
 
-If `UHT` build succeeds, congratulations, your dev environment should be good. If it fails, revise the **I. [Tooling]** or check **[Troubleshooting]** sections.
+If `UHT` or `BlankProgram` build succeeds, congratulations, your dev environment should be good. If it fails, revise the **I. [Tooling]** or check **[Troubleshooting]** sections.
 
 ### Building Unreal Game target  
 

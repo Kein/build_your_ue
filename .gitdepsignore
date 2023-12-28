@@ -4,9 +4,9 @@
 #                                   #
 #####################################
 
-# This .gitdepignore list was curated for Win64 and Win75 ONLY.
-# It cuts offf a lot of IOS, MacOS, Linux and android stuff.
-# If you plan to do multi-plat packaging REVISE it thoroughly.
+# This .gitdepignore list was curated for Win64 and Win64 ONLY.
+# It skips a lot of IOS, MacOS, Linux and android stuff.
+# If you plan to do multi-platform packaging REVISE this file thoroughly.
 
 # General stuff we skip, like Docs, Templates, etc
 /Engine/Documentation/**
@@ -15,12 +15,12 @@
 /Samples/**
 /Templates/**
 
-# Exceptions
+# Personal exceptions, you can remove these
 !/FeaturePacks/TP_ThirdPersonBP.upack
 !/Templates/TP_ThirdPersonBP
 !/Templates/TemplateResources
 
-# We want python
+# We want python (unless we don't?)
 !/Engine/Extras/ThirdPartyNotUE/emsdk/Win64/python/**
 !/Engine/Extras/ThirdPartyNotUE/emsdk/Win64/clang/**
 
