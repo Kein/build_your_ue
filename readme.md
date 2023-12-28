@@ -117,7 +117,7 @@ UE5.3 --
 ```
 dotnet build Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.sln -c Development
 ```
-*(I recommend building the *.sln project because it also builds all dependencies like new UHT for U5.3)*
+*(I recommend building the \*.sln project because it also builds all dependencies like new UHT for U5.3)*
 
 UE5.x --  
 ```
@@ -204,7 +204,7 @@ That is pretty much it for the basic UE build.
 
 ### Minimal working Editor
 
-An example for UE5:
+An example for UE5.3:
 
 ```
 dotnet build Engine\Source\Programs\UnrealBuildTool\UnrealBuildTool.sln
@@ -213,13 +213,13 @@ dotnet build Engine\Source\Programs\AutomationTool\AutomationUtils\AutomationUti
 dotnet build Engine\Source\Programs\AutomationTool\IOS\IOS.Automation.csproj
 dotnet build Engine\Source\Programs\AutomationTool\Scripts\AutomationScripts.Automation.csproj
 
-UnrealBuildTool.exe UnrealHeaderTool Win64 Development
-UnrealBuildTool.exe UnrealPAK Win64 Development
+UnrealBuildTool.exe UnrealPak Win64 Development
 UnrealBuildTool.exe ShaderCompileWorker Win64 Development
 
 UnrealBuildTool.exe UnrealEditor Win64 Development
 UnrealBuildTool.exe UnrealGame Win64 Development
 ```
+(for 5.2 add `UnrealBuildTool.exe UnrealHeaderTool Win64 Development`)
 
 This build should run, work and package projects.
 
@@ -293,10 +293,10 @@ and add a section `<BuildConfiguration>`:
 </BuildConfiguration>
 ```
 
-[For more information about about build configuration file see its documentation page](https://docs.unrealengine.com/4.26/en-US/ProductionPipelines/BuildTools/UnrealBuildTool/BuildConfiguration/)
+[For more information about about BuildConfiguration.xml file see  the relevant section in this doc](#buildconfiguration)   
 
 
-Now all that's left is to **rebuild** `UBT` and you are done. PDB and debug info no longer will be generated during build process. This save both on overall build time and disk space.
+Now all that's left is to **rebuild** `UBT` and you are done. PDB and debug info no longer will be generated during build process. This save both on overall build time and disk space. It is actually one of the **biggest** time saves.
 
 ### Skipping plugins
 The best and easiest way to skip building specific plugins is to simply remove/move them somewhere else from `$(EngineSource)\Plugins`. There is technically a way to somehow add them to blacklist/do-not-build list but I never found a working method. I think it used to work once but with time that code broke and got abandoned/forgotten.
