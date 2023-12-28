@@ -332,7 +332,7 @@ You will also most likely need to rebuild `UBT` afterwards, before you can build
 
 
 ### BuildConfiguration
-If you don't want to go through the hassle of passing some custom compiler/linker flags, then BuildConfiguration.xml is just a too for you - it allows you to configure/control build environment and build process for UE  and its projects.
+If you don't want to go through the hassle of passing some custom compiler/linker flags, then `BuildConfiguration.xml` is just a tool for you - it allows you to configure/control build environment and build process for UE  and its projects.
 It is impossible to cover everything this config file offers, so we only go through the basics. You can read about the rest at 
 https://docs.unrealengine.com/5.3/en-US/build-configuration-for-unreal-engine/
 
@@ -368,13 +368,14 @@ Let us unpack this. This config was created for UE 5.3 as a base. The machine it
 
 `[ProjectFileGenerator]` section allows us to configure some useful behaviour for project gen, like excluding extra junk from being added to project files. There is no point to recompile C# tools every time, for example.
 
-`[WindowsPlatform]` section allows us to specify which WindowsSDK we will be building against via `WindowsSdkVersion` directive (in case you have multiple installed), as well as which C++ build tools version we gonna use via `CompilerVersion` directive. To find out which versions you can use there, go to `<Visual_Studio_root_dir\VC\Tools\MSVC\>` - there will be a list of directories by version. You specific THIS exact version in the config, not the binary version of the linker/compiler. Finally, `PCHMemoryAllocationFactor` allows us to configure how much memory we allocate per thread (in this case it most likely will be a thread per core) for PCH. If you get a lot of `out of heap!` errors during compilation, try tweaking this parameter. 
+`[WindowsPlatform]` section allows us to specify which Windows SDK we will be building against via `WindowsSdkVersion` directive (in case you have multiple installed), as well as which C++ build tools version we gonna use via `CompilerVersion` directive. To find out which versions you can use there, go to `<Visual_Studio_root_dir\VC\Tools\MSVC\>` - there will be a list of directories by version. You specify THIS exact version in the config, not the binary version of the linker/compiler. Finally, `PCHMemoryAllocationFactor` allows us to configure how much memory we allocate per thread (in this case it most likely will be a thread per core) for PCH. If you get a lot of `out of heap!` errors during compilation, try tweaking this parameter. 
 
 And the last section `[BuildConfiguration]` is something we've already covered in [Skipping Debug symbols and PDB gen)](#skipping-debug-symbols-and-pdb-gen). All of the options are self-explanatory, but if you need specifics, please consult linked UE documentation on the subject.
 
 One thing to note is that I personally recommend using  
 `%APPDATA%\Unreal Engine\UnrealBuildTool\`   
 as a default location for your config. For some reason per-engine file sometimes being ignored and I haven't figured out what causes this bug yet.
+
 
 ### Passing extra compiler/linker flags
 TODO
