@@ -135,6 +135,18 @@ dotnet build Engine\Source\Programs\DotNETCommon\DotNETUtilities\DotNETUtilities
 dotnet build Engine\Source\Programs\AutomationTool\AutomationTool.csproj -c Development
 ```
 
+Now that you've built UBT you can ***generate your project files***, if you desire:
+
+Foreign:   
+```
+UnrealBuildTool.exe -projectfiles -project="Path:\to\my.uproject" -currentplatform -game
+```
+
+Native:   
+```
+UnrealBuildTool.exe -projectfiles -currentplatform
+```
+
 If UBT or AT fails to build, see **[Troubleshooting]** section.
 
 ### Building UnrealHeaderTool/BlankProgram
