@@ -149,6 +149,7 @@ UnrealBuildTool.exe -projectfiles -currentplatform
 
 If UBT or AT fails to build, see **[Troubleshooting]** section.
 
+
 ### Building UnrealHeaderTool/BlankProgram
 
 Once you have `UBT` built, it is time to test if our dev environment set up correctly and if we can compile and link UE modules and programs. Do note that **UnrealHeaderTool** was removed from UE 5.3 and is no longer an *engine program* but rather a part of EpicGames Shared C++ toolkit and is being built when you compile `AutomationTools`/`UBT` (as a solution for the latter).
@@ -213,6 +214,7 @@ UnrealBuildTool.exe ShaderCompileWorker Win64 Development
 
 Now you can run the Editor.  
 That is pretty much it for the basic UE build.
+
 
 ### Minimal working Editor
 
@@ -281,10 +283,15 @@ As you may now have fully realized - generated project files is just a convenien
 ### Skipping Debug symbols and PDB gen
 By default, `UBT` has a hardcoded flag to always generate `DebugInfo` as well as PDBs. I assume this was done on purpose by Epic to make their life easier and ensure users always provide some kind of meaningful stack crash trace, sacrificing user choice in the process. Let us fix that.
 
+______________________________
+**[UE 5.4+]**  
+Just pass `-nodebuginfo` and `-nolinkerdebuginfo` to `UBT` and that will be enough.
+______________________________
+**[UE <5.4]**  
 Open file
 `$(EngineSource)\Programs\UnrealBuildTool\Platform\Windows\UEBuildWindows.cs`
 
-Find something that looks like this (code here changes eery version):
+Find something that looks like this (code here changes every version):
 ```csharp
 GlobalLinkEnvironment.bCreateDebugInfo = true;
 ```
@@ -307,13 +314,12 @@ and add a section `<BuildConfiguration>`:
 
 [For more information about about BuildConfiguration.xml file see  the relevant section in this doc](#buildconfiguration)   
 
-
 Now all that's left is to **rebuild** `UBT` and you are done. PDB and debug info no longer will be generated during build process. This save both on overall build time and disk space. It is actually one of the **biggest** time saves.
 
 ### Skipping plugins
 The best and easiest way to skip building specific plugins is to simply remove/move them somewhere else from `$(EngineSource)\Plugins`. There is technically a way to somehow add them to blacklist/do-not-build list but I never found a working method. I think it used to work once but with time that code broke and got abandoned/forgotten.
 
-Each UE version has its own requirements to the minimal set of plugins required to build and successfully run `Editor/Game` targets. You will have to experiment, because it constantly changes, but in general, here is minimal set for 5.x that works:
+Each UE version has its own requirements to the minimal set of plugins required to build and successfully run `Editor/Game` targets. You will have to experiment, because it constantly changes, but in general, here is minimal set for *<=5.3* that works:
 
 ```
 Plugins/Compression/OodleNetwork                Plugins/Editor/EditorDebugTools
@@ -377,6 +383,15 @@ Example config:
 ```
 
 Let us unpack this. This config was created for UE 5.3 as a base. The machine it is used on has 12 logical cores and 6 physical ones, but because UE build pipeline operate at a higher level on physical cores (the compilers/linkers will do their own thing), we specify here physical count (the UBT will output number of processor being used/available during build), hence `MaxProcessorCount` set to 6. You can omit `[ParallelExecutor]` altogether if unsure.
+
+If you want to split execution to logical cores explicitly, you can also specify multiplier:
+```xml
+<ParallelExecutor>
+	<MaxProcessorCount>6</MaxProcessorCount>
+	<ProcessorCountMultiplier>1.9</ProcessorCountMultiplier>
+</ParallelExecutor>
+```
+Example above will split the work across 11 logical cores: (6*1.9) rounded down.
 
 `[ProjectFileGenerator]` section allows us to configure some useful behaviour for project gen, like excluding extra junk from being added to project files. There is no point to recompile C# tools every time, for example.
 
