@@ -15,7 +15,8 @@
  -- [Building Unreal Game target](#building-unreal-game-target)  
  -- [Building Unreal Editor target](#building-unreal-editor-target)  
  -- [Minimal working Editor](#minimal-working-editor)  
-   
+ -- [Building your projects](#building-your-projects)  
+
  **[III ADVANCED BUILD](#iii-advanced-build)**   
  -- [Other platforms and configurations](#other-platforms-and-configurations)  
  -- [Available targets](#available-targets)  
@@ -27,6 +28,7 @@
   **[IV TROUBLESHOOTING](#iv-troubleshooting)**   
 
   **[V BONUS](#v-bonus)**   
+ -- [Foreign vs Native project setup](#foreign-vs-native-project-setup)   
  -- [Marketplace content with Legendary](#marketplace-content-with-legendary)  
 
 
@@ -237,6 +239,23 @@ UnrealBuildTool.exe UnrealGame Win64 Development
 
 This build should run, work and package projects.
 
+### Building your projects
+
+> *Native*:
+```
+UnrealBuildTool.exe MyProjectGame Win64 Development
+
+UnrealBuildTool.exe MyProjectEditor Win64 Development
+```
+(replace `MyProject*` with your target(s) names)
+
+> *Foreign*:
+```
+UnrealBuildTool.exe -project="Full\path\to\myproject.uproject" MyProjectGame Win64 Development -game
+
+UnrealBuildTool.exe -project="Full\path\to\myproject.uproject" MyProjectEditor Win64 Development -editor
+```
+
 ## III ADVANCED BUILD
 
 ### Other platforms and configurations
@@ -415,6 +434,13 @@ TODO
 TODO
 
 ## V BONUS
+
+### Foreign vs Native project setup
+Source build/setup of UE supports so-called *native* project structure. You can read more about native projects [here](https://dev.epicgames.com/community/learning/knowledge-base/eP9R/unreal-engine-what-s-a-native-project).
+
+Foreign projects are all the projects that do not meet native project requirements i.e. not in any of the paths defined in `*.uprojectdirs` file(s) or not in any of the default paths used for native structure (i.e. `$(EngineRoot)\ProjectFolder`). These types of projects usually used with Installed Builds.
+
+If you work with a single project and iterate often on Engine and Project sources as well as using USync on top you probably better of with native project. However, if you are using an Installed Build, then foreign project are easier to manage and reason about since they are self-contained.
 
 ### Marketplace content with Legendary  
 
