@@ -42,7 +42,7 @@ The purpose of this guide is to give you a quick, high-level overview of how to 
 `$(EngineSource)` - the `$(EngineRoot)\Engine\Source\` directory  
 `AT`  - AutomationTool(s), Epic's C#/.NET UE pipeline app  
 `UBT` - UnrealBuildTool, Epic's C#/.NET UE pipeline app  
-`UHT` - UnrealHeaderTool, C++ pipeline app  
+`UHT` - UnrealHeaderTool, C++ (later C#) pipeline app  
 
 
 ### Limitations
@@ -154,7 +154,7 @@ If UBT or AT fails to build, see **[Troubleshooting]** section.
 
 ### Building UnrealHeaderTool/BlankProgram
 
-Once you have `UBT` built, it is time to test if our dev environment set up correctly and if we can compile and link UE modules and programs. Do note that **UnrealHeaderTool** was removed from UE 5.3 and is no longer an *engine program* but rather a part of EpicGames Shared C++ toolkit and is being built when you compile `AutomationTools`/`UBT` (as a solution for the latter).
+Once you have `UBT` built, it is time to test if our dev environment set up correctly and if we can compile and link UE modules and programs. Do note that **UnrealHeaderTool** was removed from UE 5.3 and is no longer an *engine program* but rather a part of EpicGames Shared C# toolkit and is being built when you compile `AutomationTools`/`UBT` (as a solution for the latter).
 
 From `$(EngineRoot)` directory:  
 
@@ -451,5 +451,6 @@ Instead, we can use a CLI-tool made to interact with for Epic Store, called [Leg
 * `legendary list --include-ue` will list all the downloadable UE content (along with the rest)
 
 * `legendary install AppNameHere --download-only --base-path D:\UEStuff` will download the subscription/app content
+
 
 One thing to note - if you want to download some of the content from UE5.x apps, you can't do it on a freshly made account. You actually need to install Epic Launcher first, login with this account, initiate any UE5 version download, then cancel it and uninstall. This will "subscribe" you to UE5 feed and now it will be accessible in `Legendary` as well.
